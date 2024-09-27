@@ -1,24 +1,21 @@
-import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
 import { Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 import { Button, Text } from "app/components"
 import { isRTL } from "../i18n"
-import { useStores } from "../models"
 import { AppStackScreenProps } from "../navigators"
 import { colors, spacing } from "../theme"
-import { useHeader } from "../utils/useHeader"
+// import { useHeader } from "../utils/useHeader"
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
-
+import { logout } from "app/store/authSlice"
+import { useAppDispatch } from "app/store/store"
 const welcomeLogo = require("../../assets/images/logo.png")
 const welcomeFace = require("../../assets/images/welcome-face.png")
-
+import { useHeader } from "../utils/useHeader"
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
-export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeScreen(_props) {
-  const { navigation } = _props
-  const {
-    authenticationStore: { logout },
-  } = useStores()
+export const WelcomeScreen: FC<WelcomeScreenProps> = (props) => {
+  const { navigation } = props
+  const dispatch = useAppDispatch()
 
   function goNext() {
     console.tron.log("Going to the next screen")
@@ -27,7 +24,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
   useHeader(
     {
       rightTx: "common.logOut",
-      onRightPress: logout,
+      onRightPress: () => dispatch(logout()),
     },
     [logout],
   )
@@ -60,7 +57,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       </View>
     </View>
   )
-})
+} //)
 
 const $container: ViewStyle = {
   flex: 1,

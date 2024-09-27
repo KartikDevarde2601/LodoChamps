@@ -1,23 +1,23 @@
-import { observer } from "mobx-react-lite"
 import React, { ComponentType, FC, useEffect, useMemo, useRef, useState } from "react"
 import { TextInput, TextStyle, ViewStyle } from "react-native"
 import { Button, Icon, Screen, Text, TextField, TextFieldAccessoryProps } from "../components"
-import { useStores } from "../models"
 import { AppStackScreenProps } from "../navigators"
 import { colors, spacing } from "../theme"
+import { useAppDispatch } from "app/store/store"
+import { login as loginAction } from "app/store/authSlice"
 
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
-export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_props) {
+export const LoginScreen: FC<LoginScreenProps> = (props) => {
   const authPasswordInput = useRef<TextInput>(null)
+  const dispatch = useAppDispatch()
 
   const [authPassword, setAuthPassword] = useState("")
+  const [authEmail, setAuthEmail] = useState("")
+  const [validationError, setValidationError] = useState()
   const [isAuthPasswordHidden, setIsAuthPasswordHidden] = useState(true)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [attemptsCount, setAttemptsCount] = useState(0)
-  const {
-    authenticationStore: { authEmail, setAuthEmail, setAuthToken, validationError },
-  } = useStores()
 
   useEffect(() => {
     // Here is where you could fetch credentials from keychain or storage
@@ -45,9 +45,8 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
     setIsSubmitted(false)
     setAuthPassword("")
     setAuthEmail("")
-
-    // We'll mock this with a fake token.
-    setAuthToken(String(Date.now()))
+    const token = String(new Date())
+    dispatch(loginAction({ token, userId: "Kartik@512" }))
   }
 
   const PasswordRightAccessory: ComponentType<TextFieldAccessoryProps> = useMemo(
@@ -115,7 +114,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
       />
     </Screen>
   )
-})
+}
 
 const $screenContentContainer: ViewStyle = {
   paddingVertical: spacing.xxl,
