@@ -36,6 +36,7 @@ export type AppStackParamList = {
   Welcome: undefined
   Login: undefined
   // 🔥 Your screens go here
+  LodoBoard: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -72,6 +73,7 @@ const AppStack = function AppStack() {
       )}
 
       {/** 🔥 Your screens go here */}
+      <Stack.Screen name="LodoBoard" component={Screens.LodoBoardScreen} />
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

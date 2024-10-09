@@ -18,7 +18,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = (props) => {
   const dispatch = useAppDispatch()
 
   function goNext() {
-    console.tron.log("Going to the next screen")
+    navigation.navigate("LodoBoard")
   }
 
   useHeader(

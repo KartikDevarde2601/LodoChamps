@@ -1,6 +1,11 @@
 // TODO: write documentation for colors and palette in own markdown file and add links from here
 
 const palette = {
+  diceGreen:"#00a049",
+  diceRed:"#d5151D",
+  diceYellow:"#ffde17",
+  diceBlue:"#28aeff",
+  diceBoarder:"#4f6e82",
   neutral100: "#FFFFFF",
   neutral200: "#F4F2F1",
   neutral300: "#D7CEC9",
@@ -35,7 +40,14 @@ const palette = {
 
   overlay20: "rgba(25, 16, 21, 0.2)",
   overlay50: "rgba(25, 16, 21, 0.5)",
+
+ 
 } as const
+
+const gradient = {
+  linearGradient: ["#0052be","#5f9fcd","#97c6c9"],
+  diceGradient: ["#aac8ab","#aac8ab","#aac8ab"],
+}
 
 export const colors = {
   /**
@@ -44,6 +56,9 @@ export const colors = {
    * semantic names as much as possible.
    */
   palette,
+
+
+  gradient,
   /**
    * A helper for making something see-thru.
    */
