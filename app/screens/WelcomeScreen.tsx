@@ -6,7 +6,7 @@ import { AppStackScreenProps } from "../navigators"
 import { colors, spacing } from "../theme"
 // import { useHeader } from "../utils/useHeader"
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
-import { logout } from "app/store/authSlice"
+import { logout } from "app/store/authFeature/authSlice"
 import { useAppDispatch } from "app/store/store"
 const welcomeLogo = require("../../assets/images/logo.png")
 const welcomeFace = require("../../assets/images/welcome-face.png")

@@ -15,6 +15,9 @@ import LottieView from "lottie-react-native"
 import { AutoImage } from "./AutoImage"
 import DiceRoll from "../../assets/animation/diceroll.json"
 import Arrow from "../../assets/images/arrow.png"
+import { useAppSelector, useAppDispatch } from "app/store/store"
+import { selectPlayerPiecesByNumber } from "app/store/gameFeature/selector"
+import { newDiceNumber } from "app/store/gameFeature/gameSlice"
 
 export interface DiceProps {
   /**
@@ -33,14 +36,21 @@ export interface DiceProps {
 export const Dice = React.memo(function Dice(props: DiceProps) {
   const { style, color, rotate, player, data } = props
 
+  const isDiceRolled = useAppSelector((state) => state.game.isDiceRolled)
+  const diceNumber = useAppSelector((state) => state.game.diceNumber)
+  const currentPlayerTurn = useAppSelector((state) => state.game.currentPlayerTurn)
+  const playerPieces = useAppSelector((state) =>
+    player !== undefined ? selectPlayerPiecesByNumber(state, player) : undefined,
+  )
+  const [diceRoling, setDiceRoling] = React.useState(false)
+
+  const dispatch = useAppDispatch()
+
   const pileIcon = BackgroundImage.GetPileImage(color)
-  const diceIcon = BackgroundImage.GetDiceImage(6)
+  const diceIcon = BackgroundImage.GetDiceImage(diceNumber)
 
   const $mainContainer = [$container, { transform: [{ scaleX: rotate ? -1 : 1 }] }]
-
   const arrowAnim = React.useRef(new Animated.Value(0)).current
-
-  const [diceRoling, setDiceRoling] = React.useState(false)
 
   React.useEffect(() => {
     const animatedArrow = () => {
@@ -63,6 +73,16 @@ export const Dice = React.memo(function Dice(props: DiceProps) {
     }
     animatedArrow()
   }, [])
+
+  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
+
+  const handleDicePress = async () => {
+    const diceValue: number = Math.floor(Math.random() * 6) + 1
+    setDiceRoling(true)
+    await delay(800)
+    dispatch(newDiceNumber(diceValue))
+    setDiceRoling(false)
+  }
 
   return (
     <View style={$mainContainer}>
@@ -87,19 +107,25 @@ export const Dice = React.memo(function Dice(props: DiceProps) {
           end={{ x: 1, y: 0.5 }}
         >
           <View style={$diceContainer}>
-            <TouchableOpacity>
-              <AutoImage source={diceIcon} style={{ width: 55, height: 55 }} />
-            </TouchableOpacity>
+            {currentPlayerTurn === player && !diceRoling && (
+              <TouchableOpacity
+                disabled={!isDiceRolled}
+                activeOpacity={0.4}
+                onPress={handleDicePress}
+              >
+                <AutoImage source={diceIcon} style={{ width: 55, height: 55 }} />
+              </TouchableOpacity>
+            )}
           </View>
         </LinearGradient>
       </View>
-      {diceRoling && (
+      {currentPlayerTurn === player && !diceRoling && (
         <Animated.View style={{ transform: [{ translateX: arrowAnim }] }}>
           <AutoImage source={Arrow} style={{ width: 35, height: 35 }} />
         </Animated.View>
       )}
 
-      {diceRoling && (
+      {currentPlayerTurn === player && diceRoling && (
         <LottieView
           source={DiceRoll}
           style={$rolingDice}

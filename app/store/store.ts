@@ -1,13 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import  reactotron from "../devtools/ReactotronConfig";
 
 
-import counterReducer from "./counterSlice";
-import authReducer from "./authSlice";
+import authReducer from "./authFeature/authSlice";
+import gameReducer from "./gameFeature/gameSlice";
 
 const persistConfig = {
   key: "root",
@@ -16,8 +15,8 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  counter: counterReducer,
   auth: authReducer,
+  game: gameReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

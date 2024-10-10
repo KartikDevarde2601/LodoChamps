@@ -4,7 +4,7 @@ import { Button, Icon, Screen, Text, TextField, TextFieldAccessoryProps } from "
 import { AppStackScreenProps } from "../navigators"
 import { colors, spacing } from "../theme"
 import { useAppDispatch } from "app/store/store"
-import { login as loginAction } from "app/store/authSlice"
+import { login as loginAction } from "app/store/authFeature/authSlice"
 
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
